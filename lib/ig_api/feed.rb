@@ -45,7 +45,7 @@ module IgApi
       has_next_page = true
       followers = []
       user_id = (!data[:id].nil? ? data[:id] : user.data[:id])
-      data[:rank_token] = IgApi::API.generate_rank_token user.session.scan(/ds_user_id=([\d]+);/)[0][0]
+      data[:rank_token] = IgApi::Http.generate_rank_token user.session.scan(/ds_user_id=([\d]+);/)[0][0]
       while has_next_page && limit > followers.size
         response = user_followers_next_page(user, user_id, data)
         has_next_page = !response['next_max_id'].nil?
@@ -59,7 +59,7 @@ module IgApi
       endpoint = "https://i.instagram.com/api/v1/friendships/#{user_id}/followers/"
       param = "?rank_token=#{data[:rank_token]}" +
               (!data[:max_id].nil? ? '&max_id=' + data[:max_id] : '')
-      result = IgApi::API.http(
+      result = IgApi::Http.http(
         url: endpoint + param,
         method: 'GET',
         user: user

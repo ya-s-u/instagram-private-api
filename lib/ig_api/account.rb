@@ -53,7 +53,7 @@ module IgApi
 
     def self.search_for_user_graphql(user, username)
       endpoint = "https://www.instagram.com/#{username}/?__a=1"
-      result = IgApi::API.http(url: endpoint, method: 'GET', user: user)
+      result = IgApi::Http.http(url: endpoint, method: 'GET', user: user)
 
       response = JSON.parse result.body, symbolize_names: true, object_class: OpenStruct
       return nil unless response.user.any?
